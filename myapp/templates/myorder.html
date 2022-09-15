@@ -1,0 +1,97 @@
+{% extends 'header.html' %}  
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    </head>
+	<body>
+		
+		<!-- SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+
+					<!-- section title -->
+					<div class="col-md-12">
+						<div class="section-title">
+							{% if carts %}
+							<h3 class="title">Cart Products</h3>
+							{% else %}
+							<h3 class="title">No Products In Cart</h3>
+							{% endif %}
+						</div>
+					</div>
+					<!-- /section title -->
+
+					<!-- Products tab & slick -->
+					<div class="col-md-12">
+						<div class="row">
+							<div class="products-tabs">
+								<!-- tab -->
+								<div id="tab1" class="tab-pane active">
+									<div class="products-slick" data-nav="#slick-nav-1">
+										{% for i in carts %}
+										<!-- product -->
+										<div class="product">
+											<div class="product-img">
+												<img src="{{i.product.product_image.url}}" alt="" width="200px" height="250px">
+												<div class="product-label">
+													<span class="sale">-30%</span>
+													<span class="new">NEW</span>
+												</div>
+											</div>
+											<div class="product-body">
+												<p class="product-category">
+												{{i.product.product_category}}</p>
+												<h3 class="product-name"><a href="#">{{i.product.product_name}}</a></h3>
+												<h4 class="product-price">{{i.product.product_price}}</h4>
+												<div class="product-rating">
+													<i class="fa fa-star"></i>
+													<i class="fa fa-star"></i>
+													<i class="fa fa-star"></i>
+													<i class="fa fa-star"></i>
+													<i class="fa fa-star"></i>
+												</div>
+												<form method="post" action="{% url 'change_qty' pk=i.pk %}">
+													{% csrf_token %}
+													<h4 class='product-quantity'> Product Qty : 
+													<input type='number' name="product_qty" value="{{i.product_qty}}" min="1" max="10" onchange="this.form.submit();"></h4>
+													<h4 class="product-price">Total Price : {{i.total_price}}</h4>
+												</form>
+												
+											</div>
+											<div class="add-to-cart">
+												<a href="{% url 'product_details' pk=i.product.pk %}">
+												<button class="add-to-cart-btn"><i class="fa fa-info-circle"></i> Details  </button></a>
+											</div>
+										
+										</div>
+										<!-- /product -->
+										{% endfor %}
+
+									</div><br><br><br><br>
+									<h1 align='center'>Net Price : {{net_price}}</h1>
+									<div id="slick-nav-1" class="products-slick-nav"></div>
+								</div>
+								<!-- /tab -->
+							</div>
+						</div>
+					</div>
+					<!-- Products tab & slick -->
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /SECTION -->
+
+		
+		
+		
+
+	</body>
+</html>
+{% endblock %}
